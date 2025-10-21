@@ -9,6 +9,9 @@ public class WebClientConfig {
 
     @Bean
     public WebClient swapiWebClient() {
-        return WebClient.builder().baseUrl("https://swapi.dev/api/").build();
+        return WebClient.builder()
+                .baseUrl("https://swapi.dev/api")
+                .defaultHeader("Accept", "application/json")
+                .build();
     }
 }

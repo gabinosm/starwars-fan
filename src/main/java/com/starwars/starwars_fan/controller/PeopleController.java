@@ -26,10 +26,10 @@ public class PeopleController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "15") int size,
             @RequestParam(required = false) String search,
-            @RequestParam(defaultValue = "name") String sort,
+            @RequestParam(required = false) String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        SortRequest sortRequest = new SortRequest(sort, SortDirection.fromString(direction));
+        SortRequest sortRequest = new SortRequest(sortBy, SortDirection.fromString(direction));
         return ResponseEntity.ok(
                 peopleService.getPeople(page, size, search, sortRequest)
         );

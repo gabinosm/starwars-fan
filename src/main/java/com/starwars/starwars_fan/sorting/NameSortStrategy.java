@@ -1,13 +1,17 @@
 package com.starwars.starwars_fan.sorting;
 
-import com.starwars.starwars_fan.dto.PersonDto;
 import com.starwars.starwars_fan.dto.SortDirection;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
+import java.util.function.Function;
 
-@Component
-public class NameSortStrategy implements SortStrategy<PersonDto> {
+public class NameSortStrategy<T> implements SortStrategy<T> {
+
+    private final Function<T, String> nameExtractor;
+
+    public NameSortStrategy(java.util.function.Function<T, String> nameExtractor) {
+        this.nameExtractor = nameExtractor;
+    }
 
     @Override
     public String getKey() {
@@ -15,8 +19,8 @@ public class NameSortStrategy implements SortStrategy<PersonDto> {
     }
 
     @Override
-    public Comparator<PersonDto> getComparator(SortDirection direction) {
-        Comparator<PersonDto> comp = Comparator.comparing(PersonDto::getName, String.CASE_INSENSITIVE_ORDER);
+    public Comparator<T> getComparator(SortDirection direction) {
+        Comparator<T> comp = Comparator.comparing(nameExtractor, String.CASE_INSENSITIVE_ORDER);
         return direction == SortDirection.DESC ? comp.reversed() : comp;
     }
 }

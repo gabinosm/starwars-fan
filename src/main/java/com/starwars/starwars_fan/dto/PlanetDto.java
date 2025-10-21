@@ -1,10 +1,12 @@
 package com.starwars.starwars_fan.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlanetDto {
     private String id;
     private String name;

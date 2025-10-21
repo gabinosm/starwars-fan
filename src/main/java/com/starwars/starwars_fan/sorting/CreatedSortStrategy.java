@@ -1,14 +1,19 @@
 package com.starwars.starwars_fan.sorting;
 
-import com.starwars.starwars_fan.dto.PersonDto;
 import com.starwars.starwars_fan.dto.SortDirection;
-import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
+import java.util.function.Function;
 
-@Component
-public class CreatedSortStrategy implements SortStrategy<PersonDto> {
+public class CreatedSortStrategy<T> implements SortStrategy<T> {
+
+    private final Function<T, String> createdExtractor;
+
+    public CreatedSortStrategy(Function<T, String> createdExtractor) {
+        this.createdExtractor = createdExtractor;
+    }
 
     @Override
     public String getKey() {
@@ -16,10 +21,19 @@ public class CreatedSortStrategy implements SortStrategy<PersonDto> {
     }
 
     @Override
-    public Comparator<PersonDto> getComparator(SortDirection direction) {
-        Comparator<PersonDto> comp = Comparator.comparing(p ->
-                OffsetDateTime.parse(p.getCreated())
+    public Comparator<T> getComparator(SortDirection direction) {
+        Comparator<T> comparator = Comparator.comparing(
+                item -> parseDate(createdExtractor.apply(item)),
+                Comparator.nullsLast(Comparator.naturalOrder())
         );
-        return direction == SortDirection.DESC ? comp.reversed() : comp;
+        return direction == SortDirection.DESC ? comparator.reversed() : comparator;
+    }
+
+    private OffsetDateTime parseDate(String date) {
+        try {
+            return date != null ? OffsetDateTime.parse(date) : null;
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 }
