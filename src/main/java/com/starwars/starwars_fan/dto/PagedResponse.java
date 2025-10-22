@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,5 +15,5 @@ public class PagedResponse<T> {
     private int size;
     private long totalItems;
     private int totalPages;
-    private List<T> items;
+    private List<T> items = new ArrayList<>();
 }

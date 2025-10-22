@@ -8,9 +8,9 @@ import com.starwars.starwars_fan.sorting.SortStrategyFactory;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class SortStrategyConfig {
-    private final SortStrategyFactory sortStrategyFactory;
+    /*private final SortStrategyFactory sortStrategyFactory;
 
     public SortStrategyConfig(SortStrategyFactory sortStrategyFactory) {
         this.sortStrategyFactory = sortStrategyFactory;
@@ -23,5 +23,5 @@ public class SortStrategyConfig {
 
         sortStrategyFactory.register(new NameSortStrategy<>(PlanetDto::getName), PlanetDto.class);
         sortStrategyFactory.register(new CreatedSortStrategy<>(PlanetDto::getCreated), PlanetDto.class);
-    }
+    }*/
 }

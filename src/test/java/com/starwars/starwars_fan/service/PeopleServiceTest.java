@@ -9,67 +9,72 @@ import com.starwars.starwars_fan.sorting.SortStrategy;
 import com.starwars.starwars_fan.sorting.SortStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class PeopleServiceTest {
 
+    @Mock
     private SwapiClient swapiClient;
+    @Mock
     private SortStrategyFactory sortStrategyFactory;
+    @Mock
+    private SortStrategy<PersonDto> sortStrategy;
+
+    @InjectMocks
     private PeopleService peopleService;
+
+    private List<PersonDto> mockPeople;
 
     @BeforeEach
     void setUp() {
-        swapiClient = mock(SwapiClient.class);
-        sortStrategyFactory = mock(SortStrategyFactory.class);
-        peopleService = new PeopleService(swapiClient, sortStrategyFactory);
-    }
-
-    @Test
-    void shouldFilterPeopleBySearchTerm() {
-        PersonDto luke = new PersonDto(); luke.setName("Luke Skywalker");
-        PersonDto leia = new PersonDto(); leia.setName("Leia Organa");
-        when(swapiClient.fetchAllPeople()).thenReturn(List.of(luke, leia));
-
-        PagedResponse<PersonDto> response = peopleService.getPeople(1, 15, "luke", null);
-
-        assertEquals(1, response.getItems().size());
-        assertEquals("Luke Skywalker", response.getItems().get(0).getName());
-    }
-
-    @Test
-    void shouldSortPeopleByNameDescending() {
+        MockitoAnnotations.openMocks(this);
         PersonDto luke = new PersonDto(); luke.setName("Luke");
-        PersonDto anakin = new PersonDto(); anakin.setName("Anakin");
+        PersonDto leia = new PersonDto(); leia.setName("Leia");
+        PersonDto han = new PersonDto(); han.setName("Han");
+        mockPeople = List.of(luke, leia, han);
+    }
 
-        SortStrategy<PersonDto> mockStrategy = mock(SortStrategy.class);
-        when(mockStrategy.getComparator(SortDirection.DESC))
-                .thenReturn(Comparator.comparing(PersonDto::getName).reversed());
-        when(sortStrategyFactory.getStrategy("name", PersonDto.class)).thenReturn(mockStrategy);
-        when(swapiClient.fetchAllPeople()).thenReturn(List.of(luke, anakin));
+    @Test
+    void shouldFilterPeopleBySearch() {
+        when(swapiClient.fetchAllPeople()).thenReturn(mockPeople);
 
-        SortRequest sortRequest = new SortRequest("name", SortDirection.DESC);
-        PagedResponse<PersonDto> response = peopleService.getPeople(1, 15, null, sortRequest);
+        PagedResponse<PersonDto> result = peopleService.getPeople(1, 10, "le", null);
 
-        assertEquals("Luke", response.getItems().get(0).getName());
+        assertThat(result.getItems()).extracting(PersonDto::getName)
+                .containsExactly("Leia");
+    }
+
+    @Test
+    void shouldSortPeopleAscending() {
+        when(swapiClient.fetchAllPeople()).thenReturn(mockPeople);
+        when(sortStrategyFactory.getStrategy(eq("name"), eq(PersonDto.class))).thenReturn(sortStrategy);
+        when(sortStrategy.getComparator(SortDirection.ASC))
+                .thenReturn(Comparator.comparing(PersonDto::getName));
+
+        SortRequest sort = new SortRequest("name", SortDirection.ASC);
+        PagedResponse<PersonDto> result = peopleService.getPeople(1, 10, null, sort);
+
+        assertThat(result.getItems().getFirst().getName()).isEqualTo("Han");
+        assertThat(result.getItems().getLast().getName()).isEqualTo("Luke");
     }
 
     @Test
     void shouldPaginateCorrectly() {
-        List<PersonDto> people = List.of(
-                new PersonDto(), new PersonDto(), new PersonDto()
-        );
-        when(swapiClient.fetchAllPeople()).thenReturn(people);
+        when(swapiClient.fetchAllPeople()).thenReturn(mockPeople);
 
-        PagedResponse<PersonDto> response = peopleService.getPeople(2, 2, null, null);
+        PagedResponse<PersonDto> result = peopleService.getPeople(2, 1, null, null);
 
-        assertEquals(2, response.getPage());
-        assertEquals(2, response.getSize());
-        assertEquals(3, response.getTotalItems());
+        assertThat(result.getPage()).isEqualTo(2);
+        assertThat(result.getItems()).hasSize(1);
+        assertThat(result.getTotalPages()).isEqualTo(3);
     }
 }
