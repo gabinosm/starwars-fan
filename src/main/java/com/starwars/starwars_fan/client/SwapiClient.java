@@ -3,7 +3,6 @@ package com.starwars.starwars_fan.client;
 import com.starwars.starwars_fan.dto.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class SwapiClient {
     }
 
     private <T> List<T> fetchAllPages(String resource, Class<T> responseType) {
-        String url = resource;
+        String url = resource.startsWith("/") ? resource : "/" + resource;;
         List<T> results = new ArrayList<>();
 
         while (url != null) {
