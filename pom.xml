@@ -7,7 +7,6 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.starwars</groupId>
@@ -18,16 +17,11 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<lombok.version>1.18.34</lombok.version>
+		<testcontainers.version>1.20.3</testcontainers.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -35,6 +29,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<!-- Lombok -->
@@ -53,17 +51,17 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mockito</groupId>
-					<artifactId>mockito-core</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -77,24 +75,28 @@
 			<version>4.12.0</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mockserver</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>3.9.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-
-	<!-- Maven profiles -->
-	<profiles>
-		<profile>
-			<id>unit-tests</id>
-			<properties>
-				<spring.profiles.active>test</spring.profiles.active>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>integration-tests</id>
-			<properties>
-				<spring.profiles.active>it</spring.profiles.active>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<plugins>
@@ -104,8 +106,8 @@
 				<version>3.4.0</version>
 				<executions>
 					<execution>
-						<id>add-test-source</id>
-						<phase>generate-test-sources</phase>
+						<id>add-integration-test-source</id>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>add-test-source</goal>
 						</goals>
@@ -116,8 +118,8 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>add-test-resource</id>
-						<phase>generate-test-resources</phase>
+						<id>add-integration-test-resources</id>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>add-test-resource</goal>
 						</goals>
@@ -154,13 +156,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
-					<argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
-					<systemPropertyVariables>
-						<net.bytebuddy.agent.silent>true</net.bytebuddy.agent.silent>
-					</systemPropertyVariables>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
+					<excludes>
+						<exclude>**/*IT.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 
@@ -168,12 +166,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.2.5</version>
-				<configuration>
-					<argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
-					<systemPropertyVariables>
-						<net.bytebuddy.agent.silent>true</net.bytebuddy.agent.silent>
-					</systemPropertyVariables>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -183,7 +175,6 @@
 						<configuration>
 							<includes>
 								<include>**/*IT.java</include>
-								<include>**/*ItTest.java</include>
 							</includes>
 						</configuration>
 					</execution>
