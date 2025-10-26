@@ -48,6 +48,7 @@ public class PlanetsControllerTest {
                         .param("direction", "ASC")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.items[0].name").value("Tatooine"));
     }
 

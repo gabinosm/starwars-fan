@@ -48,6 +48,7 @@ public class PeopleControllerTest {
                         .param("direction", "ASC")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.items[0].name").value("Luke Skywalker"));
     }
 
@@ -65,4 +66,16 @@ public class PeopleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].name").doesNotExist());
     }
+
+    /*@Test
+    void shouldReturn500WhenServiceFails() throws Exception {
+        Mockito.when(peopleService.getPeople(anyInt(), anyInt(), anyString(), any(SortRequest.class)))
+                .thenThrow(new RuntimeException("Service error"));
+
+        mockMvc.perform(get("/api/people")
+                        .param("page", "1")
+                        .param("size", "5")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+    }*/
 }

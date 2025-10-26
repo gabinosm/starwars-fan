@@ -10,7 +10,7 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class WireMockContainerConfig {
 
-    private static final GenericContainer<?> wiremockContainer =
+    static final GenericContainer<?> wiremockContainer =
             new GenericContainer<>(DockerImageName.parse("wiremock/wiremock:3.9.1"))
                     .withExposedPorts(8080)
                     .withClasspathResourceMapping(
