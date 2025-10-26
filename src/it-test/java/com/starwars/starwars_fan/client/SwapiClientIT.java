@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("it")
 @Import(WireMockContainerConfig.class)
-public class SwapiClientItTest {
+public class SwapiClientIT {
 
     @Autowired
     private Environment env;

@@ -150,13 +150,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
-					<argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
 					<excludes>
 						<exclude>**/*IT.java</exclude>
-						<exclude>**/*ItTest.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -165,9 +160,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.2.5</version>
-				<configuration>
-					<argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -177,7 +169,6 @@
 						<configuration>
 							<includes>
 								<include>**/*IT.java</include>
-								<include>**/*ItTest.java</include>
 							</includes>
 						</configuration>
 					</execution>

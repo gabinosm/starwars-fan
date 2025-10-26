@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("it")
-public class StarwarsFanItTest {
+public class StarwarsFanIT {
     @Test
     void contextLoads() {
         try {

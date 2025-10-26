@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("it")
-public class PeopleControllerItTest {
+public class PlanetsControllerIT {
 
     @LocalServerPort
     private int port;
@@ -25,8 +25,9 @@ public class PeopleControllerItTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnPeopleList() {
-        String url = "http://localhost:" + port + "/api/people?page=1&size=5";
+    void shouldReturnPlanetsList() {
+
+        String url = "http://localhost:" + port + "/api/planets?page=1&size=5";
 
         ResponseEntity<PagedResponse> response = restTemplate.getForEntity(url, PagedResponse.class);
 

@@ -1,7 +1,7 @@
 package com.starwars.starwars_fan.service;
 
 import com.starwars.starwars_fan.dto.PagedResponse;
-import com.starwars.starwars_fan.dto.PersonDto;
+import com.starwars.starwars_fan.dto.PlanetDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,17 +11,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("it")
-public class PeopleServiceItTest {
+public class PlanetsServiceIT {
+
 
     @Autowired
-    private PeopleService peopleService;
+    private PlanetsService planetsService;
 
     @Test
     void shouldReturnPeopleFromSwapi() {
 
-        PagedResponse<PersonDto> response = peopleService.getPeople(1, 10, null, null);
+        PagedResponse<PlanetDto> response = planetsService.getPlanets(1, 10, null, null);
 
-        assertThat(response.getItems()).extracting(PersonDto::getName)
-                .contains("Luke Skywalker", "Leia Organa");
+        assertThat(response.getItems()).extracting(PlanetDto::getName)
+                .contains("Tatooine", "Naboo");
     }
 }
