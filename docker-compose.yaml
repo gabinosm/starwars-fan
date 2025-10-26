@@ -19,5 +19,5 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - ./it-test/resources/wiremock/mappings:/home/wiremock/mappings
-      - ./it-test/resources/wiremock/__files:/home/wiremock/__files
+      - ./src/it-test/resources/wiremock/mappings:/home/wiremock/mappings
+      - ./src/it-test/resources/wiremock/__files:/home/wiremock/__files

@@ -11,7 +11,7 @@
 
 	<groupId>com.starwars</groupId>
 	<artifactId>starwars-fan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>starwars-fan</name>
 	<description>API for displays data from a third-party API</description>
 

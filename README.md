@@ -46,6 +46,7 @@ mvn spring-boot:run
 docker-compose up --build
 ```
 #### API → http://localhost:8080/api
+#### WIREMOCK → http://localhost:8081/api
 
 ## Swagger / OpenAPI Documentation
 
