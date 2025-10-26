@@ -27,7 +27,7 @@ public class SwapiClientIT {
 
     @Test
     void shouldFetchPeopleFromMockApi() {
-        System.out.println("👉 Base URL usada: " + env.getProperty("swapi.base-url"));
+        System.out.println("Base URL: " + env.getProperty("swapi.base-url"));
         List<PersonDto> people = swapiClient.fetchAllPeople();
 
         assertThat(people).isNotEmpty();

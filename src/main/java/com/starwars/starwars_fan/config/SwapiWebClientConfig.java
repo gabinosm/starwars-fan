@@ -12,7 +12,7 @@ public class SwapiWebClientConfig {
 
     @Bean
     public WebClient swapiWebClient(SwapiProperties properties, WebClient.Builder builder) {
-        System.out.println("🛰️ Configurando WebClient con base URL: " + properties.getBaseUrl());
+        System.out.println("WebClient configured in URL: " + properties.getBaseUrl());
         return builder
                 .baseUrl(properties.getBaseUrl())
                 .defaultHeader("Accept", "application/json")

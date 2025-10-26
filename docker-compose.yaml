@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  starwars-fan:
+    build: .
+    container_name: starwars-fan
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SWAPI_BASE_URL=https://swapi.dev/api
+      ##- SWAPI_BASE_URL=http://wiremock:8081/api
+    depends_on:
+      - wiremock
+
+  wiremock:
+    image: wiremock/wiremock:3.9.1
+    container_name: wiremock
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./it-test/resources/wiremock/mappings:/home/wiremock/mappings
+      - ./it-test/resources/wiremock/__files:/home/wiremock/__files

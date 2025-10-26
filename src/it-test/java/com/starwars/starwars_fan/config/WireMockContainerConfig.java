@@ -21,7 +21,7 @@ public class WireMockContainerConfig {
 
     static {
         wiremockContainer.start();
-        System.out.println("🚀 WireMock iniciado en puerto: " + wiremockContainer.getMappedPort(8080));
+        System.out.println("WireMock start in port: " + wiremockContainer.getMappedPort(8080));
     }
 
     @DynamicPropertySource
