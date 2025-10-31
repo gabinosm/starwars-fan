@@ -28,8 +28,8 @@ public class PlanetsController {
     @GetMapping
     @Operation(summary = "Get Planets list",
             description = "Allows you to search, sort, and paginate results.")
-    public ResponseEntity<PagedResponse<PlanetDto>> getPlanets(
-            @Parameter(description = "Numer page (start in 1)")
+    public PagedResponse<PlanetDto> getPlanets(
+            @Parameter(description = "Number page (start in 1)")
             @RequestParam(defaultValue = "1") int page,
 
             @Parameter(description = "Size of page")
@@ -45,8 +45,6 @@ public class PlanetsController {
             @RequestParam(defaultValue = "asc") String direction
     ) {
         SortRequest sortRequest = new SortRequest(sortBy, SortDirection.fromString(direction));
-        return ResponseEntity.ok(
-                planetsService.getPlanets(page, size, search, sortRequest)
-        );
+        return planetsService.getPlanets(page, size, search, sortRequest);
     }
 }

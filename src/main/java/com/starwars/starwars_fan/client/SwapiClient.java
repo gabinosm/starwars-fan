@@ -1,8 +1,10 @@
 package com.starwars.starwars_fan.client;
 
 import com.starwars.starwars_fan.dto.*;
+import com.starwars.starwars_fan.exception.SwapiClientException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +36,21 @@ public class SwapiClient {
         String url = resource.startsWith("/") ? resource : "/" + resource;;
         List<T> results = new ArrayList<>();
 
-        while (url != null) {
-            T response = webClient.get()
-                    .uri(url)
-                    .retrieve()
-                    .bodyToMono(responseType)
-                    .block();
+        try {
+            while (url != null) {
+                T response = webClient.get()
+                        .uri(url)
+                        .retrieve()
+                        .bodyToMono(responseType)
+                        .block();
 
-            results.add(response);
-            url = extractNextPageUrl(response);
+                results.add(response);
+                url = extractNextPageUrl(response);
+            }
+        } catch (WebClientResponseException e) {
+            throw new SwapiClientException("Error fetching data from SWAPI: " + e.getStatusCode(), e);
+        } catch (Exception e) {
+            throw new SwapiClientException("Unexpected error fetching data from SWAPI: " + e.getMessage(), e);
         }
 
         return results;
