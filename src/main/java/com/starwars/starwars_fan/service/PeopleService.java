@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PeopleService {
+public class PeopleService extends BaseService<PersonDto> {
 
     private final SwapiClient swapiClient;
     private final SortStrategyFactory sortStrategyFactory;
@@ -23,12 +23,18 @@ public class PeopleService {
 
     public PagedResponse<PersonDto> getPeople(int page, int size, String search, SortRequest sortRequest) {
 
-        List<PersonDto> allPeople = swapiClient.fetchAllPeople();
+        validatePaginationParams(page, size);
+
+        List<PersonDto> allPeople = safeCall(swapiClient::fetchAllPeople,
+                "Failed to fetch people from SWAPI");
+
+        ensureNotEmpty(allPeople, "No people found in SWAPI");
 
         if (search != null && !search.isBlank()) {
             allPeople = allPeople.stream()
                     .filter(p -> p.getName() != null && p.getName().toLowerCase().contains(search.toLowerCase()))
                     .toList();
+            ensureNotEmpty(allPeople, "No people found matching search: " + search);
         }
         if (sortRequest != null && sortRequest.getSortBy() != null) {
             SortStrategy<PersonDto> strategy = sortStrategyFactory.getStrategy(sortRequest.getSortBy(), PersonDto.class);
@@ -39,12 +45,6 @@ public class PeopleService {
             }
         }
 
-        int totalElements = allPeople.size();
-        int fromIndex = Math.min((page - 1) * size, totalElements);
-        int toIndex = Math.min(fromIndex + size, totalElements);
-        int totalPages = (int) Math.ceil((double) totalElements / size);
-        List<PersonDto> paginated = allPeople.subList(fromIndex, toIndex);
-
-        return new PagedResponse<>(page, size, totalElements, totalPages, paginated);
+        return paginate(allPeople, page, size);
     }
 }

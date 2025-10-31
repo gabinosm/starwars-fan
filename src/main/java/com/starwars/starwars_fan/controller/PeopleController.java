@@ -28,8 +28,8 @@ public class PeopleController {
     @GetMapping
     @Operation(summary = "Get People list",
             description = "Allows you to search, sort, and paginate results.")
-    public ResponseEntity<PagedResponse<PersonDto>> getPeople(
-            @Parameter(description = "Numer page (start in 1)")
+    public PagedResponse<PersonDto> getPeople(
+            @Parameter(description = "Number page (start in 1)")
             @RequestParam(defaultValue = "1") int page,
 
             @Parameter(description = "Size of page")
@@ -45,8 +45,6 @@ public class PeopleController {
             @RequestParam(defaultValue = "asc") String direction
     ) {
         SortRequest sortRequest = new SortRequest(sortBy, SortDirection.fromString(direction));
-        return ResponseEntity.ok(
-                peopleService.getPeople(page, size, search, sortRequest)
-        );
+        return peopleService.getPeople(page, size, search, sortRequest);
     }
 }
