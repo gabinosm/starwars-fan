@@ -1,5 +1,6 @@
-package com.starwars.starwars_fan.client;
+package com.starwars.starwars_fan.integration.client;
 
+import com.starwars.starwars_fan.client.SwapiClient;
 import com.starwars.starwars_fan.config.WireMockContainerConfig;
 import com.starwars.starwars_fan.dto.PersonDto;
 import com.starwars.starwars_fan.dto.PlanetDto;
@@ -14,9 +15,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = WireMockContainerConfig.class)
 @ActiveProfiles("it")
-@Import(WireMockContainerConfig.class)
 public class SwapiClientIT {
 
     @Autowired

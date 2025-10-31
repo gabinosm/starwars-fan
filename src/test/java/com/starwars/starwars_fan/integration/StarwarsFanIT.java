@@ -1,5 +1,6 @@
-package com.starwars.starwars_fan;
+package com.starwars.starwars_fan.integration;
 
+import com.starwars.starwars_fan.StarwarsFanApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;

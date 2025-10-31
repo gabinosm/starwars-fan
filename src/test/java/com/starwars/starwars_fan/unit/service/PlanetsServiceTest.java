@@ -1,10 +1,11 @@
-package com.starwars.starwars_fan.service;
+package com.starwars.starwars_fan.unit.service;
 
 import com.starwars.starwars_fan.client.SwapiClient;
 import com.starwars.starwars_fan.dto.PagedResponse;
 import com.starwars.starwars_fan.dto.PlanetDto;
 import com.starwars.starwars_fan.dto.SortDirection;
 import com.starwars.starwars_fan.dto.SortRequest;
+import com.starwars.starwars_fan.service.PlanetsService;
 import com.starwars.starwars_fan.sorting.SortStrategy;
 import com.starwars.starwars_fan.sorting.SortStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;

@@ -8,8 +8,8 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=local
-      - SWAPI_BASE_URL=https://swapi.dev/api
-      ##- SWAPI_BASE_URL=http://wiremock:8081/api
+      ##- SWAPI_BASE_URL=https://swapi.dev/api
+      - SWAPI_BASE_URL=http://wiremock:8081/api
     depends_on:
       - wiremock
 
@@ -19,5 +19,5 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - ./src/it-test/resources/wiremock/mappings:/home/wiremock/mappings
-      - ./src/it-test/resources/wiremock/__files:/home/wiremock/__files
+      - ./src/test/resources/wiremock/mappings:/home/wiremock/mappings
+      - ./src/test/resources/wiremock/__files:/home/wiremock/__files

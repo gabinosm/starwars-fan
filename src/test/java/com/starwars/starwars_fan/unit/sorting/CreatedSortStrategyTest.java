@@ -1,7 +1,8 @@
-package com.starwars.starwars_fan.sorting;
+package com.starwars.starwars_fan.unit.sorting;
 
 import com.starwars.starwars_fan.dto.PlanetDto;
 import com.starwars.starwars_fan.dto.SortDirection;
+import com.starwars.starwars_fan.sorting.CreatedSortStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

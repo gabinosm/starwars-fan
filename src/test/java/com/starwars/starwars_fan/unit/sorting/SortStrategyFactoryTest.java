@@ -1,6 +1,10 @@
-package com.starwars.starwars_fan.sorting;
+package com.starwars.starwars_fan.unit.sorting;
 
 import com.starwars.starwars_fan.dto.PersonDto;
+import com.starwars.starwars_fan.sorting.CreatedSortStrategy;
+import com.starwars.starwars_fan.sorting.NameSortStrategy;
+import com.starwars.starwars_fan.sorting.SortStrategy;
+import com.starwars.starwars_fan.sorting.SortStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

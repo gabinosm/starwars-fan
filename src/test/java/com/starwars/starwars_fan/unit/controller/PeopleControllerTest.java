@@ -1,5 +1,6 @@
-package com.starwars.starwars_fan.controller;
+package com.starwars.starwars_fan.unit.controller;
 
+import com.starwars.starwars_fan.controller.PeopleController;
 import com.starwars.starwars_fan.dto.PagedResponse;
 import com.starwars.starwars_fan.dto.PersonDto;
 import com.starwars.starwars_fan.dto.SortRequest;

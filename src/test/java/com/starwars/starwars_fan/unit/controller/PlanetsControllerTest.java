@@ -1,5 +1,6 @@
-package com.starwars.starwars_fan.controller;
+package com.starwars.starwars_fan.unit.controller;
 
+import com.starwars.starwars_fan.controller.PlanetsController;
 import com.starwars.starwars_fan.dto.PagedResponse;
 import com.starwars.starwars_fan.dto.PlanetDto;
 import com.starwars.starwars_fan.dto.SortRequest;
